@@ -2,8 +2,10 @@ package com.cydeo.step_definitions;
 
 import com.cydeo.pages.WT_LoginPage;
 import com.cydeo.pages.WT_OrderPage;
+import com.cydeo.pages.WT_ViewAllOrdersPage;
 import com.cydeo.utilities.BrowserUtils;
 import com.cydeo.utilities.Driver;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -12,7 +14,7 @@ import org.junit.Assert;
 import java.util.List;
 import java.util.Map;
 
-public class WebTableLogin_stepdef {
+public class WebTableLogin_stepDef {
 
     WT_LoginPage loginPage = new WT_LoginPage();
 
@@ -115,6 +117,91 @@ public class WebTableLogin_stepdef {
     public void userSeesAmericanExpressEnabledPaymentOption() {
 
         Assert.assertTrue(orderPage.americanExpressButton.isEnabled());
+
+    }
+
+    //---------------------------------------------------------------------------------
+
+    @And("user enters quantity {string}")
+    public void userEntersQuantity(String arg0) {
+
+        orderPage.quantityInput.clear();
+        BrowserUtils.sleep(2);
+        orderPage.quantityInput.sendKeys("2");
+
+    }
+
+    @Then("user clicks to the calculate button")
+    public void userClicksToTheCalculateButton() {
+
+        orderPage.calculateButton.click();
+
+    }
+
+    @And("user enters customer name {string}")
+    public void userEntersCustomerName(String custName) {
+
+        orderPage.NameInput.sendKeys(custName);
+
+    }
+
+    @And("user enters street {string}")
+    public void userEntersStreet(String street) {
+        orderPage.streetInput.sendKeys(street);
+    }
+
+    @And("user enters city {string}")
+    public void userEntersCity(String city) {
+        orderPage.cityInput.sendKeys(city);
+    }
+
+    @And("user enters state {string}")
+    public void userEntersState(String state) {
+        orderPage.stateInput.sendKeys(state);
+    }
+
+    @And("user enters zip {string}")
+    public void userEntersZip(String zipCode) {
+        orderPage.zipInput.sendKeys(zipCode);
+
+    }
+
+    @And("user enters payment option {string}")
+    public void userEntersPaymentOption(String expectedCardType) {
+
+        BrowserUtils.clickRadioButton(orderPage.cardTypes, expectedCardType);
+
+    }
+
+    @And("user enters card number {string}")
+    public void userEntersCardNumber(String cardNumber) {
+
+        orderPage.cardNoInput.sendKeys(cardNumber);
+
+    }
+
+    @And("user enters card expiration date {string}")
+    public void userEntersCardExpirationDate(String cardExpireDate) {
+
+        orderPage.expireDateInput.sendKeys(cardExpireDate);
+    }
+
+    @And("user clicks to process order button")
+    public void userClicksToProcessOrderButton() {
+
+        orderPage.processOrderButton.click();
+
+    }
+
+    WT_ViewAllOrdersPage viewAllOrdersPage = new WT_ViewAllOrdersPage();
+
+
+    @Then("user should see {string} in the first row of the web table")
+    public void userShouldSeeInTheFirstRowOfTheWebTable(String expectedName) {
+
+        String actualName = viewAllOrdersPage.newCustomerCell.getText();
+
+        Assert.assertEquals(actualName, expectedName);
 
     }
 }
